@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Checkout";
+    bool isAnonym = true;
+}
+
+<h2>Checkout</h2>
+
+<form style="width: 400px" role="form">
+    @if (isAnonym)
+    {
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Firstname">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Lastname">
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon" id="phone1">Phone: +38 (</span>
+                <input type="text" class="form-control" placeholder="000" aria-describedby="phone1">
+                <span class="input-group-addon" id="phone2">)</span>
+                <input type="text" class="form-control" placeholder="00" aria-describedby="phone2">
+                <span class="input-group-addon" id="phone3">-</span>
+                <input type="text" class="form-control" placeholder="00" aria-describedby="phone3">
+                <span class="input-group-addon" id="phone4">-</span>
+                <input type="text" class="form-control" placeholder="000" aria-describedby="phone4">
+            </div>
+        </div>
+    }
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Shipping Address">
+    </div>
+    <div class="form-group">
+        <div class="btn-group" role="group" aria-label="..." data-toggle="buttons">
+            <label class="btn btn-primary active">
+                <input type="radio" value="Check">Check
+            </label>
+            <label class="btn btn-primary">
+                <input type="radio" value="COD">Cash on Delivery
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <h3><span class="label label-default">Amount: 100.43$</span></h3>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Continue">
+    </div>
+</form>
