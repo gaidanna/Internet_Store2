@@ -4026,7 +4026,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   position: relative;
   z-index: 1000;
   min-height: 50px;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
   border: 1px solid transparent;
 }
 
@@ -4052,7 +4052,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 @media (min-width: 768px) {
   .navbar {
-    border-radius: 4px;
+    /*border-radius: 4px;*/
   }
 }
 
@@ -4969,11 +4969,11 @@ a.list-group-item.active > .badge,
   display: block;
   height: auto;
   max-width: 100%;
-  padding: 4px;
+  /*padding: 4px;*/
   line-height: 1.428571429;
   background-color: #ffffff;
-  border: 1px solid #dddddd;
-  border-radius: 4px;
+  /*border: 1px solid #dddddd;
+  border-radius: 4px;*/
   -webkit-transition: all 0.2s ease-in-out;
           transition: all 0.2s ease-in-out;
 }
