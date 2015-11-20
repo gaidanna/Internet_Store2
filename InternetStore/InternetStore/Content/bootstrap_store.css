@@ -4441,7 +4441,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
   .navbar-form .form-control {
     display: inline-block;
-    width: 500px;
+    width: 350px;
     vertical-align: middle;
   }
   .navbar-form .form-control-static {
@@ -5069,8 +5069,7 @@ a.badge:focus {
 .thumbnail a > img {
   margin-left: auto;
   margin-right: auto;
-  border: 2px solid #dddddd;
-  /*border-radius: 4px;*/
+  border: 5px solid #dddddd;
 }
 a.thumbnail:hover,
 a.thumbnail:focus,
@@ -6845,4 +6844,15 @@ button.close {
 
 #logo {
 height: 220px;
+}
+
+#imageLi {
+padding: 15px 15px 10px 15px;
+}
+#imageCart {
+height: 25px;
+}
+
+#footerText {
+text-align:center;
 }
