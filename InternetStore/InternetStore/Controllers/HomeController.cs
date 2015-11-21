@@ -122,5 +122,27 @@ namespace InternetStore.Controllers
 
             return View();
         }
+
+        #region Cart
+        [HttpPost]
+        public void AddToCart(int productId) {
+            GetCart().AddItem(productId, 1);
+        }
+
+        [HttpPost]
+        public void RemoveFromCart(int productId)
+        {
+            GetCart().RemoveItem(productId, 1);
+        }
+
+        private Cart GetCart() {
+            Cart cart = (Cart)Session["Cart"];
+            if (cart == null) {
+                cart = new Cart();
+                Session["Cart"] = cart;
+            }
+            return cart;
+        }
+        #endregion
     }
 }
