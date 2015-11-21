@@ -162,3 +162,4 @@ C:\Users\Sergey Koval\Documents\GitHub\InternetStore\InternetStore\InternetStore
 C:\Users\Sergey Koval\Documents\GitHub\InternetStore\InternetStore\InternetStore\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Sergey Koval\Documents\GitHub\InternetStore\InternetStore\InternetStore\obj\Debug\InternetStore.dll
 C:\Users\Sergey Koval\Documents\GitHub\InternetStore\InternetStore\InternetStore\obj\Debug\InternetStore.pdb
+C:\Users\Sergey Koval\Documents\GitHub\InternetStore\InternetStore\InternetStore\obj\Debug\InternetStore.csprojResolveAssemblyReference.cache
