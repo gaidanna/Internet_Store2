@@ -9,8 +9,14 @@ namespace InternetStore.Classes
     [Table(Name = "Order_Details")]
     public class OrderDetails
     {
+        public OrderDetails()
+        {
+            Random keygen = new Random();
+            this._id = keygen.Next(int.MaxValue);
+        }
+
         private int _id;
-        [Column(Storage = "_id", Name = "ID", DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true, IsDbGenerated = true)]
+        [Column(Storage = "_id", Name = "ID", DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true)]
         public int ID
         {
             get { return this._id; }
