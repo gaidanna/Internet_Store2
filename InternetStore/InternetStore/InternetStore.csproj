@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -190,11 +191,22 @@
     <Content Include="Scripts\bootstrap-formhelpers.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrapSplash.css" />
     <Content Include="Content\bootstrap_store.css" />
+    <Content Include="Content\Dell Precision Tower 5810.jpg" />
+    <Content Include="Content\Lenovo C40.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\1.png" />
+    <Content Include="Images\b5.jpg" />
+    <Content Include="Images\b7.png" />
+    <Content Include="Images\b8.jpg" />
+    <Content Include="Images\BG.jpg" />
+    <Content Include="Images\cart.png" />
+    <Content Include="Images\Laptop.jpg" />
+    <Content Include="Images\logo1.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -252,6 +264,9 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\ProductsList.cshtml" />
+    <Content Include="Views\Home\ProductDetailList.cshtml" />
+    <Content Include="Views\Home\OrderHistory.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

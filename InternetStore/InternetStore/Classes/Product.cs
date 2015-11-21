@@ -24,7 +24,7 @@ namespace InternetStore.Classes
         }
 
         private string _productName;
-        [Column(Storage = "_productName", Name = "product_name")]
+        [Column(Storage = "_productName", Name = "productname")]
         public string ProductName
         {
             get { return this._productName; }
