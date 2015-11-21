@@ -17,6 +17,13 @@ namespace InternetStore.Controllers
         {
             using (InternetStoreDBContext dbc = new InternetStoreDBContext())
             {
+                var categories = (from item in dbc.Categories select item).ToList().FirstOrDefault();
+                var orderDetails = (from item in dbc.OrderDetails select item).ToList().FirstOrDefault();
+                var orders = (from item in dbc.Orders select item).ToList().FirstOrDefault();
+                var products = (from item in dbc.Products select item).ToList().FirstOrDefault();
+                var sales = (from item in dbc.Sales select item).ToList().FirstOrDefault();
+                var users = (from item in dbc.Users select item).ToList().FirstOrDefault();
+
                 #region creating new objects examples
                 //var c = new Category();
                 //c.CategoryName = "newCategory777";
@@ -53,16 +60,16 @@ namespace InternetStore.Controllers
                 #endregion
 
                 #region updating objects Badaboo style - works perfect lol!!!
-                var oldCategory = (from c in dbc.Categories where c.ID == 18 select c).ToList().FirstOrDefault();
-                dbc.Categories.DeleteOnSubmit(oldCategory);
+                //var oldCategory = (from c in dbc.Categories where c.ID == 18 select c).ToList().FirstOrDefault();
+                //dbc.Categories.DeleteOnSubmit(oldCategory);
 
-                dbc.SubmitChanges();//some crap spilled here
+                //dbc.SubmitChanges();//some crap spilled here
 
-                var newCategory = new Category();
-                newCategory.ID = 18;
-                newCategory.CategoryName = "little tities";
-                newCategory.Details = "some boobs here";
-                dbc.Categories.InsertOnSubmit(newCategory);//Hell yeah! 
+                //var newCategory = new Category();
+                //newCategory.ID = 18;
+                //newCategory.CategoryName = "little tities";
+                //newCategory.Details = "some boobs here";
+                //dbc.Categories.InsertOnSubmit(newCategory);//Hell yeah! 
                 #endregion
 
                 dbc.SubmitChanges(); //Commit changes to DB
