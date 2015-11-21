@@ -9,8 +9,14 @@ namespace InternetStore.Classes
     [Table(Name = "Sales")]
     public class Sale
     {
+        public Sale()
+        {
+            Random keygen = new Random();
+            this._id = keygen.Next(int.MaxValue);
+        }
+
         private int _id;
-        [Column(Storage = "_id", Name = "ID", DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true, IsDbGenerated = true)]
+        [Column(Storage = "_id", Name = "ID", DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true)]
         public int ID
         {
             get { return this._id; }
@@ -25,9 +31,9 @@ namespace InternetStore.Classes
             set { this._orderID = value; }
         }
 
-        private int _salesAmount;
+        private double _salesAmount;
         [Column(Storage = "_salesAmount", Name = "sales_amount")]
-        public int SalesAmount
+        public double SalesAmount
         {
             get { return this._salesAmount; }
             set { this._salesAmount = value; }

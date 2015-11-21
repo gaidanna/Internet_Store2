@@ -10,8 +10,15 @@ namespace InternetStore.Classes
     [Table(Name = "Users")]
     public class User
     {
+        public User()
+        {
+            Random keygen = new Random();
+            this._id = keygen.Next(int.MaxValue);
+            this._orders = new EntitySet<Order>();
+        }
+
         private int _id;
-        [Column(Storage = "_id", Name = "ID", DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true, IsDbGenerated = true)]
+        [Column(Storage = "_id", Name = "ID", DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true)]
         public int ID
         {
             get { return this._id; }
@@ -75,10 +82,6 @@ namespace InternetStore.Classes
         }
 
         private EntitySet<Order> _orders;
-        public User()
-        {
-            this._orders = new EntitySet<Order>();
-        }
 
         [Association(Storage = "_orders", OtherKey = "UserID")]
         public EntitySet<Order> Orders

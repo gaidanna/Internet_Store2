@@ -10,8 +10,15 @@ namespace InternetStore.Classes
     [Table(Name = "Orders")]
     public class Order
     {
+        public Order()
+        {
+            Random keygen = new Random();
+            this._id = keygen.Next(int.MaxValue);
+            this._user = new EntityRef<User>();
+        }
+
         private int _id;
-        [Column(Storage = "_id", Name = "ID", DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true, IsDbGenerated = true)]
+        [Column(Storage = "_id", Name = "ID", DbType = "Int NOT NULL IDENTITY", IsPrimaryKey = true)]
         public int ID
         {
             get { return this._id; }
@@ -51,7 +58,6 @@ namespace InternetStore.Classes
         }
 
         private EntityRef<User> _user;
-        public Order() { this._user = new EntityRef<User>(); }
 
         [Association(Storage = "_user", ThisKey = "UserID")]
         public User User
