@@ -135,10 +135,10 @@ namespace InternetStore.Controllers
             GetCart().RemoveItem(productId, 1);
         }
 
-        private Cart GetCart() {
-            Cart cart = (Cart)Session["Cart"];
+        private CartViewModel GetCart() {
+            CartViewModel cart = (CartViewModel)Session["Cart"];
             if (cart == null) {
-                cart = new Cart();
+                cart = new CartViewModel();
                 Session["Cart"] = cart;
             }
             return cart;
