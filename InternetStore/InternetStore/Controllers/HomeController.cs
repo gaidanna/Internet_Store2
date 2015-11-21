@@ -17,14 +17,32 @@ namespace InternetStore.Controllers
         {
             using (InternetStoreDBContext dbc = new InternetStoreDBContext())
             {
-                var categories = (from item in dbc.Categories select item).ToList().FirstOrDefault();
-                var orderDetails = (from item in dbc.OrderDetails select item).ToList().FirstOrDefault();
+                /* PAY ATTENTION TO THIS PIECE OF CRAP: */
+                var time = DateTime.Now.ToOADate();
+                Order o = new Order() { ShippingAddress = "sda", UserID = 1, ShippingStatus = "bsdf", ShippingDate = time };
+                dbc.Orders.InsertOnSubmit(o);
+
                 var orders = (from item in dbc.Orders select item).ToList().FirstOrDefault();
-                var products = (from item in dbc.Products select item).ToList().FirstOrDefault();
-                var sales = (from item in dbc.Sales select item).ToList().FirstOrDefault();
-                var users = (from item in dbc.Users select item).ToList().FirstOrDefault();
+                var date = DateTime.FromOADate(orders.ShippingDate);
+
+                #region picking existing data
+                //var categories = (from item in dbc.Categories select item).ToList().FirstOrDefault();
+                //var orderDetails = (from item in dbc.OrderDetails select item).ToList().FirstOrDefault();
+                //var products = (from item in dbc.Products select item).ToList().FirstOrDefault();
+                //var sales = (from item in dbc.Sales select item).ToList().FirstOrDefault();
+                //var users = (from item in dbc.Users select item).ToList().FirstOrDefault(); 
+                #endregion
 
                 #region creating new objects examples
+                //Sale s = new Sale() { OrderID = 1, SalesAmount = 123.12 };
+                //dbc.Sales.InsertOnSubmit(s);
+
+                //User u = new Classes.User() { Address = "asd", Email = "mail", Password = "pass", FirstName = "name", LastName = "name", UserName = "name", Phone = "000000000" };
+                //dbc.Users.InsertOnSubmit(u);
+
+                //OrderDetails od = new OrderDetails() { OrderID = 1, ProductID = 1, Quantity = 1 };
+                //dbc.OrderDetails.InsertOnSubmit(od);
+
                 //var c = new Category();
                 //c.CategoryName = "newCategory777";
                 //c.Details = "details";

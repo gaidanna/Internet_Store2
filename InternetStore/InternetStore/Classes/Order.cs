@@ -41,9 +41,9 @@ namespace InternetStore.Classes
             set { this._shippingAddress = value; }
         }
 
-        private DateTime _shippingDate;
+        private double _shippingDate;
         [Column(Storage = "_shippingDate", Name = "shipping_date")]
-        public DateTime ShippingDate
+        public double ShippingDate
         {
             get { return this._shippingDate; }
             set { this._shippingDate = value; }
