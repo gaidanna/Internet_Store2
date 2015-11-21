@@ -12,6 +12,20 @@ namespace InternetStore.Controllers
         {
             return View();
         }
+        public ActionResult ProductsList()
+        {
+            return View();
+        }
+
+        public ActionResult ProductDetailList()
+        {
+            return View();
+        }
+
+        public ActionResult OrderHistory()
+        {
+            return View();
+        }
 
         public ActionResult About()
         {

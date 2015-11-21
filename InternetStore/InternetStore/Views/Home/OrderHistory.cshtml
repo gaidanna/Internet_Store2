@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "OrderHistory";
+}
+<script type="text/javascript" src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+<link type="text/css" href="~/Content/bootstrap_store.css" rel="stylesheet" />
+<link type="text/css" href="~/Content/Site.css" rel="stylesheet" />
+
+<style type="text/css">
+    .incenter {
+        display: inline-block;
+        float: none;
+        vertical-align: middle;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="well-lg">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row panel-title">
+                                <div class="col-md-3 incenter">
+                                    <p>Order #1</p>
+                                </div>
+                                <div class="col-md-3 incenter">
+                                    <p>Data</p>
+                                </div>
+                                <div class="col-md-3 incenter">
+                                    <p>Summa</p>
+                                </div>
+                                <div class="col-md-2 incenter">
+                                    <p>Status</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body" hidden>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="col-md-3 incenter">
+                                        <img src="https://farm9.staticflickr.com/8851/17981207038_b07e104295_o.jpg" class="img-responsive" />
+                                    </div>
+                                    <div class="col-md-3 incenter">
+                                        <a href="#"><h4>Lenovo C40</h4></a> 
+                                    </div>
+                                    <div class="col-md-3 incenter">
+                                        <p>1 shtuka</p>
+                                    </div>
+                                    <div class="col-md-2 incenter">
+                                        <p>Price 100$</p>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="col-md-3 incenter">
+                                        <img src="https://farm9.staticflickr.com/8851/17981207038_b07e104295_o.jpg" class="img-responsive img-thumbnail" />
+                                    </div>
+                                    <div class="col-md-3 incenter">
+                                        <p>Lenovo C40</p>
+                                    </div>
+                                    <div class="col-md-3 incenter">
+                                        <p>1 shtuka</p>
+                                    </div>
+                                    <div class="col-md-2 incenter">
+                                        <p>Price 100$</p>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="col-md-offset-6 col-md-5 incenter">
+                                        <p>Dostavka po adresu</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".panel-heading").click(function () {
+            $(this).parent().children(".panel-body").toggle();
+        });
+    });
+</script>

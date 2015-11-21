@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "ProductsList";
+}
+
+<script type="text/javascript" src="~/Scripts/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+
+<div class="row">
+    <div class="col-md-3">
+        <form role="form" class="form-horizontal" action="/Home/ProductList" method="post">
+
+            <div class="form-group">
+                <label for="category" class="col-md-3 control-label">Category</label>
+                <div class="col-md-9">
+                    <select class="form-control" name="category">
+                        <option value="All">All</option>
+                        <option value="Desktop">Desktop</option>
+                        <option value="Laptop">Laptop</option>
+                        <option value="Table">Table</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-12">Price</label>
+                <label for="PriceFrom" class="col-md-3 control-label">From</label>
+                <div class="col-md-9">
+                    <input type="number" class="form-control" name="PriceFrom" id="PriceFrom" min="0">
+                </div>
+                <label for="PriceTo" class="col-md-3 control-label">To</label>
+                <div class="col-md-9">
+                    <input type="number" class="form-control" name="PriceTo" id="PriceTo" min="0">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-7">
+                    <input type="submit" value="Apply" class="col-md-11" />
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-3 well">
+                <a href="#"><h4>Lenovo C40</h4></a> 
+                <img src="http://savepic.su/6533640.png" class="img-responsive img-thumbnail"/>
+                <p>Price 1$</p>
+                <p>10 in Store</p>
+                <div class="description" hidden>
+                    Processor
+                    Intel Core i5-4460 Processor (6MB Cache, 3.20GHz)
+                    Operating System
+                    Windows 7 Professional 64 preinstalled through downgrade rights in Windows 8.1 Pro 64
+                    First Video Adapter
+                    Integrated Video
+                    Total Memory
+                    4GB PC3-12800 DDR3 1600MHz UDIMM
+                    First Hard Drive
+                    500GB+8GB Hybrid Hard Drive, 2.5", SATA
+                    First Optical Device
+                    DVD Burner/CD-RW, SATA
+                </div>
+                <div class="btn btn-primary col-md-offset-8"><span class="glyphicon glyphicon-shopping-cart"></span> Buy</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-offset-3 text-center">
+        <ul class="pagination">
+            <li class="disabled"><a href="#">&laquo;</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".well").mouseenter(function () {
+            $(this).children(".description").show();
+        });
+        $(".well").mouseleave(function () {
+            $(this).children(".description").hide();
+        });
+    });
+</script>
