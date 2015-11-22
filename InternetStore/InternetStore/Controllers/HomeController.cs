@@ -94,6 +94,9 @@ namespace InternetStore.Controllers
                 #endregion
 
                 //dbc.SubmitChanges(); //Commit changes to DB
+
+                var product = (from item in dbc.Products select item).ToList().FirstOrDefault();
+                GetCart().AddItem(product, 1);
             }
             return View();
         }
@@ -182,17 +185,59 @@ namespace InternetStore.Controllers
             return View();
         }
 
-        #region Cart
-        [HttpPost]
-        public void AddToCart(int productId)
+        #region Cart Page
+        public ViewResult Cart(CartViewModel cart, string returnUrl)
         {
-            GetCart().AddItem(productId, 1);
+            ViewBag.ReturnUrl = returnUrl;
+
+            return View(cart);
+        }
+
+        public PartialViewResult CartSummary()
+        {
+            return PartialView(GetCart());
+        }
+        #endregion
+
+        #region Cart
+        public RedirectToRouteResult AddToCart(CartViewModel cart, int productId, string returnUrl)
+        {
+            using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+            {
+                var product = (from item in dbc.Products select item).ToList().FirstOrDefault();
+                if(product != null)
+                {
+                    cart.AddItem(product, 1);
+                }
+            }
+            return RedirectToAction("Cart", new { returnUrl});
+        }
+
+        public RedirectToRouteResult RemoveFromCart(CartViewModel cart, int productId, string returnUrl)
+        {
+            using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+            {
+                var product = (from item in dbc.Products select item).ToList().FirstOrDefault();
+                if (product != null)
+                {
+                    cart.RemoveItem(product, 1);
+                }
+            }
+            return RedirectToAction("Cart", new { returnUrl });
         }
 
         [HttpPost]
-        public void RemoveFromCart(int productId)
+        public RedirectToRouteResult RemoveLineFromCart(CartViewModel cart, int productId, string returnUrl)
         {
-            GetCart().RemoveItem(productId, 1);
+            using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+            {
+                var product = (from item in dbc.Products select item).ToList().FirstOrDefault();
+                if (product != null)
+                {
+                    cart.RemoveLine(product);
+                }
+            }
+            return RedirectToAction("Cart", new { returnUrl });
         }
 
         private CartViewModel GetCart()
