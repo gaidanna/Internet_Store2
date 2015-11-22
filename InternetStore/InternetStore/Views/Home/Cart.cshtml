@@ -78,8 +78,6 @@
     </tfoot>
 </table>
 <div class="text-center">
-    <a class="btn btn-primary" href="@ViewBag.ReturnUrl">
-        Continue
-        shopping
-    </a>
+    <a class="btn btn-primary" href="@ViewBag.ReturnUrl">Continue shopping</a>
+    @Html.ActionLink("Checkout now", "Checkout", null, new { @class = "btn btn-primary"})
 </div>

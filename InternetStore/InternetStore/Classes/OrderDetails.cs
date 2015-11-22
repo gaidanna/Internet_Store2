@@ -14,6 +14,8 @@ namespace InternetStore.Classes
         {
             Random keygen = new Random();
             this._id = keygen.Next(int.MaxValue);
+            this._order = new EntityRef<Order>();
+            this._product = new EntityRef<Product>();
         }
 
         private int _id;
