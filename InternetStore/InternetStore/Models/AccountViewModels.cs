@@ -58,6 +58,33 @@ namespace InternetStore.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class ProfileViewModel
+    {
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "UserName")]
+        [StringLength(60, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        public string UserName { get; set; }
+
+        [Display(Name = "FirstName")]
+        [StringLength(60, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        public string FirstName { get; set; }
+
+        [Display(Name = "LastName")]
+        [StringLength(60, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        public string LastName { get; set; }
+
+        [Display(Name = "Phone")]
+        [StringLength(60, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        public string Phone { get; set; }
+        
+        [Display(Name = "Address")]
+        [StringLength(60, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 10)]
+        public string Address { get; set; }
+    }
+
     public class ResetPasswordViewModel
     {
         [Required]

@@ -18,6 +18,80 @@ namespace InternetStore.Controllers
     public class AccountController : Controller
     {
         //
+        // GET: /Account
+        [Authorize]
+        [HttpGet]
+        public ActionResult Index(string returnUrl)
+        {
+            ProfileViewModel profile = new ProfileViewModel();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+                {
+                    var currentUser = (from u in dbc.Users where u.Email == User.Identity.Name select u).ToList().FirstOrDefault();
+                    if (currentUser != null)
+                    {
+                        profile.UserName = currentUser.UserName ?? "";
+                        profile.FirstName = currentUser.FirstName ?? "";
+                        profile.LastName = currentUser.LastName ?? "";
+                        profile.Email = currentUser.Email ?? "";
+                        profile.Phone = currentUser.Phone ?? "";
+                        profile.Address = currentUser.Address ?? "";
+                    }
+                }
+            }
+            ViewBag.ReturnUrl = returnUrl;
+            return View(profile);
+        }
+
+        //
+        // POST: /Account/Login
+        [HttpPost]
+        [Authorize]
+        public ActionResult Index(ProfileViewModel profileInfo)
+        {
+            //if (ModelState.IsValid)
+            //{
+                using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+                {
+                    var newUserInfo = new Classes.User();
+                    var oldUserInfo = (from u in dbc.Users where u.Email == profileInfo.Email select u).ToList().FirstOrDefault();
+                    if (oldUserInfo != null)
+                    {
+                        dbc.Users.DeleteOnSubmit(oldUserInfo);
+                        dbc.SubmitChanges();
+                        
+                        //Currently constant fields:
+                        newUserInfo.ID = oldUserInfo.ID;
+                        newUserInfo.UserName = oldUserInfo.UserName;
+                        newUserInfo.Password = oldUserInfo.Password;
+                        //Changable fields:
+                        newUserInfo.FirstName = profileInfo.FirstName;
+                        newUserInfo.LastName = profileInfo.LastName;
+                        newUserInfo.Phone = profileInfo.Phone;
+                        newUserInfo.Address = profileInfo.Address;
+                        newUserInfo.Email = profileInfo.Email;
+
+                        dbc.Users.InsertOnSubmit(newUserInfo);
+                        dbc.SubmitChanges();
+
+                        ProfileViewModel newProfile = new ProfileViewModel();
+                        newProfile.UserName = newUserInfo.UserName ?? "";
+                        newProfile.FirstName = newUserInfo.FirstName ?? "";
+                        newProfile.LastName = newUserInfo.LastName ?? "";
+                        newProfile.Email = newUserInfo.Email ?? "";
+                        newProfile.Phone = newUserInfo.Phone ?? "";
+                        newProfile.Address = newUserInfo.Address ?? "";
+
+                        return View(newProfile);
+                    }
+                } 
+            //}
+            return View(profileInfo);
+        }
+
+        //
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -97,6 +171,10 @@ namespace InternetStore.Controllers
 
                         FormsAuthentication.SetAuthCookie(model.Email, false);
                         return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Email address already in use.");
                     }
                 }
             }

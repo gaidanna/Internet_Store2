@@ -7,7 +7,7 @@ using System.Web;
 
 namespace InternetStore.Models
 {
-    public class UserMessage
+    public class UserMessageViewModel
     {
         [Required(ErrorMessage="Please enter Your First Name")]
         public string FirstName { get; set; }

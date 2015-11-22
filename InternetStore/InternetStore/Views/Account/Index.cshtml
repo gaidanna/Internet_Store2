@@ -1,0 +1,130 @@
+﻿@model InternetStore.Models.ProfileViewModel
+@{
+    ViewBag.Title = "Index";
+}
+<script src="/Scripts/jquery-2.1.4.js"></script>
+
+<h2>@Model.UserName 's Account</h2>
+<div class="row">
+    <div class="col-md-3">
+        <div id="edit-info" style="display: none;">
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary()
+                <fieldset>
+                    @Html.HiddenFor(x => x.UserName);
+                    <div class="form-group">
+                        <label for="firstname" class="control-label">First Name</label>
+                        @if (Model != null && Model.FirstName != null)
+                        {
+                            <input value="@Model.FirstName" type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" />
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="control-label">Last Name</label>
+                        @if (Model != null && Model.LastName != null)
+                        {
+                            <input value="@Model.LastName" type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" />
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="control-label">Email</label>
+                        @if (Model != null && Model.Email != null)
+                        {
+                            <input value="@Model.Email" type="email" class="form-control" id="email" name="email" placeholder="Email Address" />
+                        }
+                        else
+                        {
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" />
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="control-label">Phone</label>
+                        @if (Model != null && Model.Phone != null)
+                        {
+                            <input value="@Model.Phone" type="text" class="form-control bfh-phone" id="phone" name="phone" data-format="+1 (ddd) ddd-dddd" />
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control bfh-phone" id="phone" name="phone" data-format="+1 (ddd) ddd-dddd" />
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="address" class="control-label">Address</label>
+                        @if (Model != null && Model.Address != null)
+                        {
+                            <textarea rows="3" type="text" class="form-control" id="address" name="address" placeholder="Address">@Model.Address</textarea>
+                        }
+                        else
+                        {
+                            <textarea rows="3" type="text" class="form-control" id="address" name="address" placeholder="Address"></textarea>
+                        }
+                    </div>
+                </fieldset>
+                <button value="Cancel" type="reset" class="btn btn-warning toggle-btn">Cancel</button>
+                
+                <button type="submit" value="Submit" class="btn btn-primary">Submit changes</button>
+            }
+        </div>
+        <div id="show-info" class="well well-lg">
+            <label for="firstname" class="control-label">First Name</label>
+            @if (Model != null && Model.FirstName != null)
+            {
+                <p>@Model.FirstName</p>
+            }
+            <label for="lastname" class="control-label">Last Name</label>
+            @if (Model != null && Model.LastName != null)
+            {
+                <p>@Model.LastName</p>
+            }
+            <label for="email" class="control-label">Email</label>
+            @if (Model != null && Model.Email != null)
+            {
+                <p>@Model.Email</p>
+            }
+            <label for="Phone" class="control-label">Phone</label>
+            @if (Model != null && Model.Phone != null)
+            {
+                <p>@Model.Phone</p>
+            }
+            <label for="address" class="control-label">Address</label>
+            @if (Model != null && Model.Address != null)
+            {
+                <p>@Model.Address</p>
+            }
+            <p class="btn btn-default toggle-btn">Edit</p>
+        </div>
+    </div>
+    <div class="col-md-offset-1 col-md-7">
+        <h2>Some addvertisment here</h2>
+        <img src="http://placehold.it/750x150">
+        <hr />
+        <h2>Some addvertisment here</h2>
+        <img src="http://placehold.it/750x120">
+        <hr />
+        <h2>Some addvertisment here</h2>
+        <img src="http://placehold.it/750x170">
+        <hr />
+        <h2>Some addvertisment here</h2>
+        <img src="http://placehold.it/750x100">
+        <hr />
+        <h2>Some addvertisment here</h2>
+        <img src="http://placehold.it/750x150">
+        <hr />
+    </div>
+</div>
+
+<script>
+    $(".toggle-btn").click(function () {
+        $("#edit-info").toggle("slow");
+        $("#show-info").toggle("slow");
+    });
+</script>
