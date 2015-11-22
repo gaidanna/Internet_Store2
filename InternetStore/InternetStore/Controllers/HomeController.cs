@@ -8,6 +8,9 @@ using System.Data.Linq.Mapping;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Common;
+using InternetStore.Models;
+using System.Net.Mail;
+using System.Net;
 
 namespace InternetStore.Controllers
 {
@@ -17,13 +20,13 @@ namespace InternetStore.Controllers
         {
             using (InternetStoreDBContext dbc = new InternetStoreDBContext())
             {
-                /* PAY ATTENTION TO THIS PIECE OF CRAP: */
-                var time = DateTime.Now.ToOADate();
-                Order o = new Order() { ShippingAddress = "sda", UserID = 1, ShippingStatus = "bsdf", ShippingDate = time };
-                dbc.Orders.InsertOnSubmit(o);
+                ///* PAY ATTENTION TO THIS PIECE OF CRAP: */
+                //var time = DateTime.Now.ToOADate();
+                //Order o = new Order() { ShippingAddress = "sda", UserID = 1, ShippingStatus = "bsdf", ShippingDate = time };
+                //dbc.Orders.InsertOnSubmit(o);
 
-                var orders = (from item in dbc.Orders select item).ToList().FirstOrDefault();
-                var date = DateTime.FromOADate(orders.ShippingDate);
+                //var orders = (from item in dbc.Orders select item).ToList().FirstOrDefault();
+                //var date = DateTime.FromOADate(orders.ShippingDate);
 
                 #region picking existing data
                 //var categories = (from item in dbc.Categories select item).ToList().FirstOrDefault();
@@ -90,10 +93,11 @@ namespace InternetStore.Controllers
                 //dbc.Categories.InsertOnSubmit(newCategory);//Hell yeah! 
                 #endregion
 
-                dbc.SubmitChanges(); //Commit changes to DB
+                //dbc.SubmitChanges(); //Commit changes to DB
             }
             return View();
         }
+
         public ActionResult ProductsList()
         {
             return View();
@@ -111,21 +115,77 @@ namespace InternetStore.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
+        [HttpGet]
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            if (User.Identity.IsAuthenticated)
+            {
+                using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+                {
+                    var currentUser = (from u in dbc.Users where u.UserName == User.Identity.Name select u).ToList().FirstOrDefault();
+                    if (currentUser != null)
+                    {
+                        ViewBag.FirstName = currentUser.FirstName ?? "";
+                        ViewBag.LastName = currentUser.LastName ?? "";
+                        ViewBag.Email = currentUser.Email ?? "";
+                        ViewBag.Phone = currentUser.Phone ?? "";
+                    }
+                }
+            }
+            return View();
+        }
 
+        [HttpPost]
+        public ActionResult Contact(UserMessage userMessage)
+        {
+            if (ModelState.IsValid)
+            {
+                //Your manager's email address:
+                string to = "kovalsergey91@gmail.com";
+                //Auto-sender account:
+                string from = "kovalsergey91@yandex.ru";
+
+                MailMessage emailMessage = new MailMessage(from, to);
+                emailMessage.Subject = "Message from customer; ABS Technologies web site;";
+                emailMessage.Body = userMessage.Complete();
+
+                //Your company's post server's settings:
+                SmtpClient client = new SmtpClient();
+                client.Host = "Smtp.yandex.ru";
+                client.Port = 25;
+                client.EnableSsl = true;
+                //Auto-sender account+password:
+                client.Credentials = new NetworkCredential(from, "opopop");
+
+                try
+                {
+                    client.Send(emailMessage);
+                    ViewBag.Success = true;
+                }
+                catch
+                {
+                    ViewBag.Success = false;
+                }
+            }
+            else
+            {
+                ViewBag.Success = false;
+            }
+            return View();
+        }
+
+        public ActionResult FAQ()
+        {
             return View();
         }
 
         #region Cart
         [HttpPost]
-        public void AddToCart(int productId) {
+        public void AddToCart(int productId)
+        {
             GetCart().AddItem(productId, 1);
         }
 
@@ -135,10 +195,12 @@ namespace InternetStore.Controllers
             GetCart().RemoveItem(productId, 1);
         }
 
-        private Cart GetCart() {
-            Cart cart = (Cart)Session["Cart"];
-            if (cart == null) {
-                cart = new Cart();
+        private CartViewModel GetCart()
+        {
+            CartViewModel cart = (CartViewModel)Session["Cart"];
+            if (cart == null)
+            {
+                cart = new CartViewModel();
                 Session["Cart"] = cart;
             }
             return cart;

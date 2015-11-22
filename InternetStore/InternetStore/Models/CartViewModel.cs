@@ -5,7 +5,7 @@ using System.Web;
 
 namespace InternetStore.Classes
 {
-    public class Cart
+    public class CartViewModel
     {
         private List<OrderDetails> _ordersDetails = new List<OrderDetails>();
 

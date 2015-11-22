@@ -166,6 +166,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\InternetStoreDBContext.cs" />
     <Compile Include="Classes\Order.cs" />
@@ -181,11 +182,17 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\UserMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\final_project_db.accdb" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Images\profile_placeholder_190x190.jpg" />
+    <Content Include="Images\profile_placeholder_300x300.jpg" />
+    <Content Include="Images\profile_placeholder_600x600.jpg" />
+    <Content Include="Content\bootstrap-formhelpers.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrapSplash.css" />
@@ -204,12 +211,22 @@
     <Content Include="Images\cart.png" />
     <Content Include="Images\Laptop.jpg" />
     <Content Include="Images\logo1.png" />
+    <Content Include="Scripts\bootstrap-formhelpers-phone.js" />
+    <Content Include="Scripts\bootstrap-formhelpers.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <None Include="Scripts\jquery-2.1.4-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -236,7 +253,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -260,6 +276,7 @@
     <Content Include="Views\Home\ProductsList.cshtml" />
     <Content Include="Views\Home\ProductDetailList.cshtml" />
     <Content Include="Views\Home\OrderHistory.cshtml" />
+    <Content Include="Views\Home\FAQ.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
