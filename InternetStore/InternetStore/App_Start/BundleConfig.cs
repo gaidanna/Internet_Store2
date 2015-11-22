@@ -26,7 +26,9 @@ namespace InternetStore
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       //"~/Content/bootstrap.css",
                       "~/Content/site.css",
-                       "~/Content/bootstrap_store.css"));
+                       "~/Content/bootstrap_store.css",
+                       "~/Content/font-awesome.css",
+                       "~/Content/bootstrap-formhelpers.css"));
         }
     }
 }

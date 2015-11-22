@@ -28,11 +28,11 @@
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav">
                                     <li><a href="#">Home</a></li>
-                                    <li><a href="#">About Us</a></li>
+                                    <li>@Html.ActionLink("About us", "About", "Home")</li>
                                     <li><a href="#">Product List</a></li>
                                     <li><a href="#">Order History</a></li>
-                                    <li><a href="#">FAQ</a></li>
-                                    <li><a href="#">Contact Us</a></li>
+                                    <li>@Html.ActionLink("FAQ", "FAQ", "Home")</li>
+                                    <li>@Html.ActionLink("Contact us", "Contact", "Home")</li>
                                     <li><a href="#" id="imageLi"><img id="imageCart" src="~/Images/cart.png"></a></li>
                                 </ul>
                                 <form class="navbar-form navbar-left" role="search">
@@ -62,6 +62,7 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
