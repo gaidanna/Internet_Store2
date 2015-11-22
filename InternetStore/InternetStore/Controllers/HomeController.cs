@@ -20,80 +20,13 @@ namespace InternetStore.Controllers
         {
             using (InternetStoreDBContext dbc = new InternetStoreDBContext())
             {
-                ///* PAY ATTENTION TO THIS PIECE OF CRAP: */
-                //var time = DateTime.Now.ToOADate();
-                //Order o = new Order() { ShippingAddress = "sda", UserID = 1, ShippingStatus = "bsdf", ShippingDate = time };
-                //dbc.Orders.InsertOnSubmit(o);
+                var products = (from c in dbc.Products select c).ToList();
+                List<Product> newList = new List<Product>();
+                foreach (var product in products)
+                    if (product.Featured)
+                        newList.Add(product);
 
-                //var orders = (from item in dbc.Orders select item).ToList().FirstOrDefault();
-                //var date = DateTime.FromOADate(orders.ShippingDate);
-
-                #region picking existing data
-                //var categories = (from item in dbc.Categories select item).ToList().FirstOrDefault();
-                //var orderDetails = (from item in dbc.OrderDetails select item).ToList().FirstOrDefault();
-                //var products = (from item in dbc.Products select item).ToList().FirstOrDefault();
-                //var sales = (from item in dbc.Sales select item).ToList().FirstOrDefault();
-                //var users = (from item in dbc.Users select item).ToList().FirstOrDefault(); 
-                #endregion
-
-                #region creating new objects examples
-                //Sale s = new Sale() { OrderID = 1, SalesAmount = 123.12 };
-                //dbc.Sales.InsertOnSubmit(s);
-
-                //User u = new Classes.User() { Address = "asd", Email = "mail", Password = "pass", FirstName = "name", LastName = "name", UserName = "name", Phone = "000000000" };
-                //dbc.Users.InsertOnSubmit(u);
-
-                //OrderDetails od = new OrderDetails() { OrderID = 1, ProductID = 1, Quantity = 1 };
-                //dbc.OrderDetails.InsertOnSubmit(od);
-
-                //var c = new Category();
-                //c.CategoryName = "newCategory777";
-                //c.Details = "details";
-                //dbc.Categories.InsertOnSubmit(c); //Allow attached changes to be commited to DB on submiting changes 
-                #endregion
-
-                #region deleting existing objects from db
-                //var oldCategory = (from c in dbc.Categories where c.ID == 18 select c).ToList().FirstOrDefault();
-                //dbc.Categories.DeleteOnSubmit(oldCategory); 
-                #endregion
-
-                #region updating objects - these examples still throw exception!!!
-                //IQueryable<InternetStore.Classes.User> custQuery =
-                //    from cust in dbc.Users
-                //    where cust.ID == 1
-                //    select cust;
-                //foreach (User cust in custQuery)
-                //{
-                //    string addr = cust.Address;
-                //    cust.Address = "NewAdress";
-                //}
-
-                //List<Category> custQuery =
-                //    (from cust in dbc.Categories
-                //    where cust.ID == 1
-                //    select cust).ToList();
-
-                //foreach (var cust in custQuery)
-                //{
-                //    string addr = cust.Details;
-                //    cust.Details = "Some Other New Details";
-                //} 
-                #endregion
-
-                #region updating objects Badaboo style - works perfect lol!!!
-                //var oldCategory = (from c in dbc.Categories where c.ID == 18 select c).ToList().FirstOrDefault();
-                //dbc.Categories.DeleteOnSubmit(oldCategory);
-
-                //dbc.SubmitChanges();//some crap spilled here
-
-                //var newCategory = new Category();
-                //newCategory.ID = 18;
-                //newCategory.CategoryName = "little tities";
-                //newCategory.Details = "some boobs here";
-                //dbc.Categories.InsertOnSubmit(newCategory);//Hell yeah! 
-                #endregion
-
-                //dbc.SubmitChanges(); //Commit changes to DB
+                ViewBag.Products = newList;
             }
             return View();
         }
@@ -125,12 +58,12 @@ namespace InternetStore.Controllers
             using (InternetStoreDBContext dbc = new InternetStoreDBContext())
             {
                 categories = (from item in dbc.Categories select item).ToList();
-                if (category == null || category=="All")
+                if (category == null || category == "All")
                     products = (from item in dbc.Products where item.Price >= priceFrom && item.Price <= priceTo select item).ToList();
                 else
                 {
                     int categ = (from item in categories where item.CategoryName == category select item).ToList().FirstOrDefault().ID;
-                    products = (from item in dbc.Products where item.Price >= priceFrom && item.Price <= priceTo && item.CategoryID== categ select item).ToList();
+                    products = (from item in dbc.Products where item.Price >= priceFrom && item.Price <= priceTo && item.CategoryID == categ select item).ToList();
                 }
             }
 
@@ -163,9 +96,9 @@ namespace InternetStore.Controllers
             List<ProductDetailListModel> ProsuctDetailListModelToView = new List<ProductDetailListModel>();
             if (tempProsuctDetailListModel.Count > 0)
             {
-                tempProsuctDetailListModel.Sort(delegate (ProductDetailListModel m1, ProductDetailListModel m2) { return m1.ProductName.CompareTo(m2.ProductName); });
+                tempProsuctDetailListModel.Sort(delegate(ProductDetailListModel m1, ProductDetailListModel m2) { return m1.ProductName.CompareTo(m2.ProductName); });
                 double TotalPagesDouble = (double)(tempProsuctDetailListModel.Count) / (double)ProductsOnPage;
-                if ((TotalPagesDouble - Math.Truncate(TotalPagesDouble)) == 0 || TotalPagesDouble<1)
+                if ((TotalPagesDouble - Math.Truncate(TotalPagesDouble)) == 0 || TotalPagesDouble < 1)
                     TotalPages = Convert.ToInt32(TotalPagesDouble);
                 else
                     TotalPages = Convert.ToInt32(TotalPagesDouble) + 1;
@@ -315,12 +248,12 @@ namespace InternetStore.Controllers
             using (InternetStoreDBContext dbc = new InternetStoreDBContext())
             {
                 var product = (from item in dbc.Products where item.ID == productId select item).ToList().FirstOrDefault();
-                if(product != null)
+                if (product != null)
                 {
                     cart.AddItem(product, 1);
                 }
             }
-            return RedirectToAction("Cart", new { returnUrl});
+            return RedirectToAction("Cart", new { returnUrl });
         }
 
         public RedirectToRouteResult RemoveFromCart(CartViewModel cart, int productId, string returnUrl)
@@ -359,6 +292,66 @@ namespace InternetStore.Controllers
                 Session["Cart"] = cart;
             }
             return cart;
+        }
+        #endregion
+
+        #region Checkout
+        public ViewResult Checkout(User user, Order order)
+        {
+            ViewBag.IsAuthenticated = User.Identity.IsAuthenticated;
+            return View();
+        }
+
+        [HttpPost]
+        public ViewResult Checkout(CartViewModel cart, User user, Order order)
+        {
+            if (cart.OrdersDetails.Count() == 0)
+            {
+                ViewBag.IsSuccess = false;
+                ViewBag.Message = "Sorry, your cart is empty!";
+            }
+            else
+            {
+                ViewBag.IsSuccess = true;
+                ViewBag.Message = "Thanks for placing your order. We'll ship your goods as soon as possible.";
+
+                using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+                {
+                    if (!User.Identity.IsAuthenticated)
+                    {
+                        dbc.Users.InsertOnSubmit(user);
+                        dbc.SubmitChanges();
+                        order.UserID = user.ID;
+                    }
+                    else
+                    {
+                        User currentUser = (from u in dbc.Users where u.Email == User.Identity.Name select u).ToList().FirstOrDefault();
+                        order.UserID = currentUser.ID;
+                    }
+
+                    order.ShippingDate = DateTime.Now.ToOADate();
+                    if (order.ShippingStatus == null)
+                        order.ShippingStatus = "Check";
+                    dbc.Orders.InsertOnSubmit(order);
+                    dbc.SubmitChanges();
+
+                    Sale sale = new Sale() { OrderID = order.ID, SalesAmount = cart.ComputeTotalValue() };
+                    dbc.Sales.InsertOnSubmit(sale);
+                    dbc.SubmitChanges();
+
+                    foreach (var orderDetails in cart.OrdersDetails)
+                    {
+                        var orderDetails2 = new OrderDetails() { OrderID = order.ID, ProductID = orderDetails.ProductID, Quantity = orderDetails.Quantity };
+                        dbc.OrderDetails.InsertOnSubmit(orderDetails2);
+                        dbc.SubmitChanges();
+                    }
+
+                    cart.Clear();
+                }
+            }
+
+            ViewBag.IsAuthenticated = User.Identity.IsAuthenticated;
+            return View();
         }
         #endregion
     }

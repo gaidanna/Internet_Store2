@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "SportStore: Checkout";
+}
+
+<div style="width: 500px; margin: auto;">
+    <h2>Check out now</h2>
+    <p>Please enter your details, and we'll ship your goods right away!</p>
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary()
+        if (!ViewBag.IsAuthenticated)
+        {
+            <h3>Ship to</h3>
+            <div class="form-group">
+                <label>Firstname:</label>
+                <input type="text" class="form-control" id="Firstname" name="firstname" placeholder="First Name" />
+                <label>Lastname:</label>
+                <input type="text" class="form-control" id="Lastname" name="lastname" placeholder="Last Name" />
+                <label>Phone:</label>
+                <input type="text" class="form-control bfh-phone" id="Phone" name="phone" data-format="+1 (ddd) ddd-dddd" />
+            </div>
+        }
+        <h3>Address</h3>
+        <div class="form-group">
+            <label>Shipping Address:</label>
+            <input type="text" class="form-control" id="address" name="ShippingAddress" placeholder="Shipping Address" />
+        </div>
+        <h3>Options</h3>
+        <div class="form-group">
+            <div class="btn-group" role="group" aria-label="..." data-toggle="buttons">
+                <label class="btn btn-primary active">
+                    <input type="radio" name="ShippingStatus" value="Check">Check
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="ShippingStatus" value="COD">Cash on Delivery
+                </label>
+            </div>
+        </div>
+        <div class="text-center">
+            <input class="btn btn-primary" type="submit" value="Complete order" />
+        </div>
+        <div class="form-group">
+            @if (ViewBag.IsSuccess != null)
+            {
+                if (!ViewBag.IsSuccess)
+                {
+                    <div class="alert alert-dismissible alert-danger">
+                        @ViewBag.Message
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-dismissible alert-success">
+                        @ViewBag.Message
+                    </div>
+                }
+            }
+        </div>
+    }
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="~/Scripts/bootstrap-formhelpers-phone.js"></script>
+<script src="~/Scripts/bootstrap-formhelpers.js"></script>
