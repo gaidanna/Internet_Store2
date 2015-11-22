@@ -1,0 +1,106 @@
+﻿@model InternetStore.Models.CartViewModel
+
+@{
+    ViewBag.Title = "Internet Store: Your Cart";
+}
+
+<style>
+    #cartTable td {
+        vertical-align: middle;
+    }
+
+    .count {
+        width: auto;
+    }
+    
+    #count form{
+        display: inline;
+    }
+</style>
+
+<h2>Your cart</h2>
+
+<table id="cartTable" class="table">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th></th>
+            <th>Quantity</th>
+            <th class="text-right">Price</th>
+            <th class="text-right">Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var orderDetail in Model.OrdersDetails)
+        {
+            <tr>
+                <td><img src="@orderDetail.Product.Image" class="img-responsive img-thumbnail" style="height:200px;" /></td>
+                <td class="text-left">@orderDetail.Product.ProductName</td>
+                <td class="text-center" id="count">
+                    @using (Html.BeginForm("RemoveFromCart", "Home"))
+                    {
+                        @Html.Hidden("ProductId", orderDetail.Product.ID)
+                        @Html.Hidden("ReturnUrl", (String)ViewBag.ReturnUrl)
+                        <input class="btn btn-sm btn-primary count" type="submit" value="<" />
+                    }
+                    @orderDetail.Quantity
+                    @using (Html.BeginForm("AddToCart", "Home"))
+                    {
+                        @Html.Hidden("ProductId", orderDetail.Product.ID)
+                        @Html.Hidden("ReturnUrl", (String)ViewBag.ReturnUrl)
+                        <input class="btn btn-sm btn-primary count" type="submit" value=">" />
+                    }
+                </td>
+                <td class="text-right">
+                    $@orderDetail.Product.Price
+                </td>
+                <td class="text-right">
+                    $@(orderDetail.Quantity * orderDetail.Product.Price)
+                </td>
+                <td>
+                    @using (Html.BeginForm("RemoveLineFromCart", "Home"))
+                    {
+                        @Html.Hidden("ProductId", orderDetail.Product.ID)
+                        @Html.Hidden("ReturnUrl", (String)ViewBag.ReturnUrl)
+                        <input class="btn btn-sm btn-warning" type="submit" value="Remove" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="text-right">Total:</td>
+            <td class="text-right">
+                $@Model.ComputeTotalValue()
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<div class="text-center">
+    <a class="btn btn-primary" href="@ViewBag.ReturnUrl">
+        Continue
+        shopping
+    </a>
+</div>
+
+@*<div class="col-md-4 well">
+    <div class="row" style="height:60px;">
+        <a href="/Home/ProductDetailList/@pdlm.ID"><h4>@pdlm.ProductName</h4></a>
+    </div>
+    <div class="row text-center">
+        <img src="@pdlm.Image" class="img-responsive img-thumbnail" style="height:200px;" />
+    </div>
+    <div class="row">
+        <h4><b>Price $ @pdlm.Price</b></h4>
+    </div>
+    <div class="row">
+        <p>@pdlm.Quantity in Store</p>
+    </div>
+    <div class="description" hidden>
+        @pdlm.Description
+    </div>
+    <div class="row">
+        <div class="btn btn-primary col-md-offset-8"><span class="glyphicon glyphicon-shopping-cart"></span> Buy</div>
+    </div>
+</div>*@
