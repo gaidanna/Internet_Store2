@@ -30,8 +30,8 @@
                 @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
             </div>
             <div class="form-group">
-                @Html.LabelFor(m => m.Phone, new { @class = "control-label" })
-                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                <label for="phone" class="control-label">Phone</label>
+                <input type="text" class="form-control bfh-phone" id="phone" name="phone" data-format="+1 (ddd) ddd-dddd" />
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.Password, new { @class = "control-label" })
@@ -51,5 +51,10 @@
 </div>
 
 @section Scripts {
+
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/bootstrap-formhelpers-phone.js"></script>
+    <script src="~/Scripts/bootstrap-formhelpers.js"></script>
 }

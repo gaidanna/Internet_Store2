@@ -188,7 +188,7 @@ namespace InternetStore.Controllers
         [HttpGet]
         public ActionResult Contact()
         {
-            UserMessage user = new UserMessage();
+            UserMessageViewModel user = new UserMessageViewModel();
 
             if (User.Identity.IsAuthenticated)
             {
@@ -208,7 +208,7 @@ namespace InternetStore.Controllers
         }
 
         [HttpPost]
-        public ActionResult Contact(UserMessage userMessage)
+        public ActionResult Contact(UserMessageViewModel userMessage)
         {
             if (ModelState.IsValid)
             {
