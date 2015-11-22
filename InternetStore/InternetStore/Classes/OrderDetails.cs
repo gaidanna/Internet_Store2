@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Web;
@@ -45,6 +46,24 @@ namespace InternetStore.Classes
         {
             get { return this._quantity; }
             set { this._quantity = value; }
+        }
+
+        private EntityRef<Order> _order;
+
+        [Association(Storage = "_order", ThisKey = "OrderID")]
+        public Order Order
+        {
+            get { return this._order.Entity; }
+            set { this._order.Entity = value; }
+        }
+
+        private EntityRef<Product> _product;
+
+        [Association(Storage = "_product", ThisKey = "ProductID")]
+        public Product Product
+        {
+            get { return this._product.Entity; }
+            set {this._product.Entity = value;}
         }
     }
 }
