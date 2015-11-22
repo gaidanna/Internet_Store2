@@ -234,21 +234,23 @@ namespace InternetStore.Controllers
         [HttpGet]
         public ActionResult Contact()
         {
+            UserMessage user = new UserMessage();
+
             if (User.Identity.IsAuthenticated)
             {
                 using (InternetStoreDBContext dbc = new InternetStoreDBContext())
                 {
-                    var currentUser = (from u in dbc.Users where u.UserName == User.Identity.Name select u).ToList().FirstOrDefault();
+                    var currentUser = (from u in dbc.Users where u.Email == User.Identity.Name select u).ToList().FirstOrDefault();
                     if (currentUser != null)
                     {
-                        ViewBag.FirstName = currentUser.FirstName ?? "";
-                        ViewBag.LastName = currentUser.LastName ?? "";
-                        ViewBag.Email = currentUser.Email ?? "";
-                        ViewBag.Phone = currentUser.Phone ?? "";
+                        user.FirstName = currentUser.FirstName ?? "";
+                        user.LastName = currentUser.LastName ?? "";
+                        user.Email = currentUser.Email ?? "";
+                        user.Phone = currentUser.Phone ?? "";
                     }
                 }
             }
-            return View();
+            return View("Contact", user);
         }
 
         [HttpPost]
