@@ -1,22 +1,24 @@
-﻿using System;
+﻿using InternetStore.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace InternetStore.Classes
+namespace InternetStore.Models
 {
     public class CartViewModel
     {
         private List<OrderDetails> _ordersDetails = new List<OrderDetails>();
 
-        public void AddItem(int productID, int quantity)
+        public void AddItem(Product product, int quantity)
         {
-            var orderDetails = _ordersDetails.Where(od => od.ProductID == productID).FirstOrDefault();
+            var orderDetails = _ordersDetails.Where(od => od.ProductID == product.ID).FirstOrDefault();
             if (orderDetails == null)
             {
                 _ordersDetails.Add(new OrderDetails
                 {
-                    ID = productID,
+                    ProductID = product.ID,
+                    Product = product,
                     Quantity = quantity
                 });
             }
@@ -26,30 +28,26 @@ namespace InternetStore.Classes
             }
         }
 
-        public void RemoveItem(int productID, int quantity)
+        public void RemoveItem(Product product, int quantity)
         {
-            var orderDetails = _ordersDetails.Where(od => od.ProductID == productID).FirstOrDefault();
+            var orderDetails = _ordersDetails.Where(od => od.ProductID == product.ID).FirstOrDefault();
             if (orderDetails != null)
             {
                 if (orderDetails.Quantity <= quantity)
-                    _ordersDetails.RemoveAll(od => od.ProductID == productID);
+                    _ordersDetails.RemoveAll(od => od.ProductID == product.ID);
                 else
                     orderDetails.Quantity -= quantity;
             }
         }
 
+        public void RemoveLine(Product product)
+        {
+            _ordersDetails.RemoveAll(od => od.ProductID == product.ID);
+        }
+
         public double ComputeTotalValue()
         {
-            double sum = 0;
-            using (InternetStoreDBContext dbc = new InternetStoreDBContext())
-            {
-                foreach (var od in _ordersDetails)
-                {
-                    var product = (from item in dbc.Products where item.ID == od.ProductID select item).ToList().FirstOrDefault();
-                    sum += product.Price * od.Quantity;
-                }
-            }
-            return sum;
+            return OrdersDetails.Sum(od => od.Product.Price * od.Quantity);
         }
 
         public void Clear()
