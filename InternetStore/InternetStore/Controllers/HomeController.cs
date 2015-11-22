@@ -103,16 +103,125 @@ namespace InternetStore.Controllers
 
         public ActionResult ProductsList()
         {
-            return View();
+            ProductsListModel model = CreateProductList(null, 0, 10000, 1);
+            return View(model);
         }
 
-        public ActionResult ProductDetailList()
+        [HttpPost]
+        public ActionResult ProductsList(string Category, int PriceFrom, int PriceTo, int Page)
         {
-            return View();
+            ProductsListModel model = CreateProductList(Category, PriceFrom, PriceTo, Page);
+            return View(model);
+        }
+
+        private ProductsListModel CreateProductList(string category, int priceFrom, int priceTo, int page)
+        {
+            //initialize data
+            ProductsListModel model = new ProductsListModel();
+            model.Categories = new List<string>();
+            model.Products = new List<ProductDetailListModel>();
+            List<Category> categories = null;
+            List<Product> products = null;
+
+            //Loading data from DB
+            using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+            {
+                categories = (from item in dbc.Categories select item).ToList();
+                if (category == null || category=="All")
+                    products = (from item in dbc.Products where item.Price >= priceFrom && item.Price <= priceTo select item).ToList();
+                else
+                {
+                    int categ = (from item in categories where item.CategoryName == category select item).ToList().FirstOrDefault().ID;
+                    products = (from item in dbc.Products where item.Price >= priceFrom && item.Price <= priceTo && item.CategoryID== categ select item).ToList();
+                }
+            }
+
+            //Fill Catagory
+            if (categories != null)
+                foreach (Category item in categories)
+                    model.Categories.Add(item.CategoryName);
+
+            //Fill Products
+            List<ProductDetailListModel> tempProsuctDetailListModel = new List<ProductDetailListModel>();
+            if (categories != null && products != null)
+                foreach (Product prod in products)
+                {
+                    string categ = (from item in categories where item.ID == prod.CategoryID select item).ToList().FirstOrDefault().CategoryName;
+                    ProductDetailListModel productDetailModel = new ProductDetailListModel(
+                        prod.ID,
+                        prod.ProductName,
+                        prod.Description,
+                        prod.Image,
+                        categ,
+                        prod.Quantity,
+                        prod.Price);
+                    tempProsuctDetailListModel.Add(productDetailModel);
+                }
+
+            //Determine list of Products in one Page
+            int ProductsOnPage = 6;
+            int CurrentPage = page;
+            int TotalPages = 0;
+            List<ProductDetailListModel> ProsuctDetailListModelToView = new List<ProductDetailListModel>();
+            if (tempProsuctDetailListModel.Count > 0)
+            {
+                tempProsuctDetailListModel.Sort(delegate (ProductDetailListModel m1, ProductDetailListModel m2) { return m1.ProductName.CompareTo(m2.ProductName); });
+                double TotalPagesDouble = (double)(tempProsuctDetailListModel.Count) / (double)ProductsOnPage;
+                if ((TotalPagesDouble - Math.Truncate(TotalPagesDouble)) == 0 || TotalPagesDouble<1)
+                    TotalPages = Convert.ToInt32(TotalPagesDouble);
+                else
+                    TotalPages = Convert.ToInt32(TotalPagesDouble) + 1;
+                int startElement = (CurrentPage - 1) * ProductsOnPage;
+                int endElement = CurrentPage * ProductsOnPage - 1;
+                if (startElement > (tempProsuctDetailListModel.Count - 1))
+                {
+                    startElement = 0;
+                    endElement = ProductsOnPage;
+                }
+                if (endElement > (tempProsuctDetailListModel.Count - 1))
+                    endElement = tempProsuctDetailListModel.Count - 1;
+                for (int i = startElement; i <= endElement; i++)
+                    ProsuctDetailListModelToView.Add(tempProsuctDetailListModel[i]);
+            }
+
+            //Create model for View
+            model.Page = CurrentPage;
+            model.CountOfPages = TotalPages;
+            model.PriceFrom = priceFrom;
+            model.PriceTo = priceTo;
+            model.SelectedCategory = category;
+            model.Products = ProsuctDetailListModelToView;
+            return model;
+        }
+
+        public ActionResult ProductDetailList(int id)
+        {
+            Product product;
+            ProductDetailListModel model = null;
+            using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+            {
+                product = (from item in dbc.Products where item.ID == id select item).ToList().FirstOrDefault();
+                if (product != null)
+                {
+                    string category = (from item in dbc.Categories where item.ID == product.CategoryID select item).ToList().FirstOrDefault().CategoryName;
+                    model = new ProductDetailListModel(
+                        product.ID,
+                        product.ProductName,
+                        product.Description,
+                        product.Image,
+                        category,
+                        product.Quantity,
+                        product.Price);
+                }
+            }
+            if (model == null)
+                return RedirectToAction("Index");
+            return View(model);
         }
 
         public ActionResult OrderHistory()
         {
+
             return View();
         }
 
