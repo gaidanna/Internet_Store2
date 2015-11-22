@@ -94,13 +94,11 @@ namespace InternetStore.Controllers
                 #endregion
 
                 //dbc.SubmitChanges(); //Commit changes to DB
-
-                var product = (from item in dbc.Products select item).ToList().FirstOrDefault();
-                GetCart().AddItem(product, 1);
             }
             return View();
         }
 
+        #region ProductsList
         public ActionResult ProductsList()
         {
             ProductsListModel model = CreateProductList(null, 0, 10000, 1);
@@ -193,7 +191,9 @@ namespace InternetStore.Controllers
             model.Products = ProsuctDetailListModelToView;
             return model;
         }
+        #endregion
 
+        #region ProductDetailList
         public ActionResult ProductDetailList(int id)
         {
             Product product;
@@ -218,6 +218,7 @@ namespace InternetStore.Controllers
                 return RedirectToAction("Index");
             return View(model);
         }
+        #endregion
 
         public ActionResult OrderHistory()
         {
@@ -313,7 +314,7 @@ namespace InternetStore.Controllers
         {
             using (InternetStoreDBContext dbc = new InternetStoreDBContext())
             {
-                var product = (from item in dbc.Products select item).ToList().FirstOrDefault();
+                var product = (from item in dbc.Products where item.ID == productId select item).ToList().FirstOrDefault();
                 if(product != null)
                 {
                     cart.AddItem(product, 1);
@@ -326,7 +327,7 @@ namespace InternetStore.Controllers
         {
             using (InternetStoreDBContext dbc = new InternetStoreDBContext())
             {
-                var product = (from item in dbc.Products select item).ToList().FirstOrDefault();
+                var product = (from item in dbc.Products where item.ID == productId select item).ToList().FirstOrDefault();
                 if (product != null)
                 {
                     cart.RemoveItem(product, 1);
@@ -340,7 +341,7 @@ namespace InternetStore.Controllers
         {
             using (InternetStoreDBContext dbc = new InternetStoreDBContext())
             {
-                var product = (from item in dbc.Products select item).ToList().FirstOrDefault();
+                var product = (from item in dbc.Products where item.ID == productId select item).ToList().FirstOrDefault();
                 if (product != null)
                 {
                     cart.RemoveLine(product);
