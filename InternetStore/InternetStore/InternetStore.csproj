@@ -183,6 +183,8 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\OrderHistory_OrderModel.cs" />
+    <Compile Include="Models\OrderHistory_ProductModel.cs" />
     <Compile Include="Models\ProductDetailListModel.cs" />
     <Compile Include="Models\ProductsListModel.cs" />
     <Compile Include="Models\UserMessage.cs" />
