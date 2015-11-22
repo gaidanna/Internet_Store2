@@ -15,7 +15,14 @@
         <a href="/Home/ProductDetailList/@Model.ID" class="incenter"><h3>@Model.ProductName</h3></a>
         <h4>$ @Model.Price</h4>
         <p>@Model.Quantity in Store</p>
-        <div class="btn btn-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Buy</div>
+        @using (Html.BeginForm("AddToCart", "Home"))
+        {
+            @Html.Hidden("ProductID", Model.ID)
+            @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-shopping-cart"></span> Buy
+            </button>
+        }
     </div>
 </div>
 

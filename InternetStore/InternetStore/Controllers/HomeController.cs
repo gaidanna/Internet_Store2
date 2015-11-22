@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Common;
 using InternetStore.Models;
+using System.Net.Mail;
+using System.Net;
 
 namespace InternetStore.Controllers
 {
@@ -18,13 +20,13 @@ namespace InternetStore.Controllers
         {
             using (InternetStoreDBContext dbc = new InternetStoreDBContext())
             {
-                /* PAY ATTENTION TO THIS PIECE OF CRAP: */
-                var time = DateTime.Now.ToOADate();
-                Order o = new Order() { ShippingAddress = "sda", UserID = 1, ShippingStatus = "bsdf", ShippingDate = time };
-                dbc.Orders.InsertOnSubmit(o);
+                ///* PAY ATTENTION TO THIS PIECE OF CRAP: */
+                //var time = DateTime.Now.ToOADate();
+                //Order o = new Order() { ShippingAddress = "sda", UserID = 1, ShippingStatus = "bsdf", ShippingDate = time };
+                //dbc.Orders.InsertOnSubmit(o);
 
-                var orders = (from item in dbc.Orders select item).ToList().FirstOrDefault();
-                var date = DateTime.FromOADate(orders.ShippingDate);
+                //var orders = (from item in dbc.Orders select item).ToList().FirstOrDefault();
+                //var date = DateTime.FromOADate(orders.ShippingDate);
 
                 #region picking existing data
                 //var categories = (from item in dbc.Categories select item).ToList().FirstOrDefault();
@@ -91,10 +93,12 @@ namespace InternetStore.Controllers
                 //dbc.Categories.InsertOnSubmit(newCategory);//Hell yeah! 
                 #endregion
 
-                dbc.SubmitChanges(); //Commit changes to DB
+                //dbc.SubmitChanges(); //Commit changes to DB
             }
             return View();
         }
+
+        #region ProductsList
         public ActionResult ProductsList()
         {
             ProductsListModel model = CreateProductList(null, 0, 10000, 1);
@@ -187,7 +191,9 @@ namespace InternetStore.Controllers
             model.Products = ProsuctDetailListModelToView;
             return model;
         }
+        #endregion
 
+        #region ProductDetailList
         public ActionResult ProductDetailList(int id)
         {
             Product product;
@@ -212,6 +218,7 @@ namespace InternetStore.Controllers
                 return RedirectToAction("Index");
             return View(model);
         }
+        #endregion
 
         public ActionResult OrderHistory()
         {
@@ -221,16 +228,138 @@ namespace InternetStore.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
+        [HttpGet]
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
+            if (User.Identity.IsAuthenticated)
+            {
+                using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+                {
+                    var currentUser = (from u in dbc.Users where u.UserName == User.Identity.Name select u).ToList().FirstOrDefault();
+                    if (currentUser != null)
+                    {
+                        ViewBag.FirstName = currentUser.FirstName ?? "";
+                        ViewBag.LastName = currentUser.LastName ?? "";
+                        ViewBag.Email = currentUser.Email ?? "";
+                        ViewBag.Phone = currentUser.Phone ?? "";
+                    }
+                }
+            }
             return View();
         }
+
+        [HttpPost]
+        public ActionResult Contact(UserMessage userMessage)
+        {
+            if (ModelState.IsValid)
+            {
+                //Your manager's email address:
+                string to = "kovalsergey91@gmail.com";
+                //Auto-sender account:
+                string from = "kovalsergey91@yandex.ru";
+
+                MailMessage emailMessage = new MailMessage(from, to);
+                emailMessage.Subject = "Message from customer; ABS Technologies web site;";
+                emailMessage.Body = userMessage.Complete();
+
+                //Your company's post server's settings:
+                SmtpClient client = new SmtpClient();
+                client.Host = "Smtp.yandex.ru";
+                client.Port = 25;
+                client.EnableSsl = true;
+                //Auto-sender account+password:
+                client.Credentials = new NetworkCredential(from, "opopop");
+
+                try
+                {
+                    client.Send(emailMessage);
+                    ViewBag.Success = true;
+                }
+                catch
+                {
+                    ViewBag.Success = false;
+                }
+            }
+            else
+            {
+                ViewBag.Success = false;
+            }
+            return View();
+        }
+
+        public ActionResult FAQ()
+        {
+            return View();
+        }
+
+        #region Cart Page
+        public ViewResult Cart(CartViewModel cart, string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+
+            return View(cart);
+        }
+
+        public PartialViewResult CartSummary()
+        {
+            return PartialView(GetCart());
+        }
+        #endregion
+
+        #region Cart
+        public RedirectToRouteResult AddToCart(CartViewModel cart, int productId, string returnUrl)
+        {
+            using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+            {
+                var product = (from item in dbc.Products where item.ID == productId select item).ToList().FirstOrDefault();
+                if(product != null)
+                {
+                    cart.AddItem(product, 1);
+                }
+            }
+            return RedirectToAction("Cart", new { returnUrl});
+        }
+
+        public RedirectToRouteResult RemoveFromCart(CartViewModel cart, int productId, string returnUrl)
+        {
+            using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+            {
+                var product = (from item in dbc.Products where item.ID == productId select item).ToList().FirstOrDefault();
+                if (product != null)
+                {
+                    cart.RemoveItem(product, 1);
+                }
+            }
+            return RedirectToAction("Cart", new { returnUrl });
+        }
+
+        [HttpPost]
+        public RedirectToRouteResult RemoveLineFromCart(CartViewModel cart, int productId, string returnUrl)
+        {
+            using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+            {
+                var product = (from item in dbc.Products where item.ID == productId select item).ToList().FirstOrDefault();
+                if (product != null)
+                {
+                    cart.RemoveLine(product);
+                }
+            }
+            return RedirectToAction("Cart", new { returnUrl });
+        }
+
+        private CartViewModel GetCart()
+        {
+            CartViewModel cart = (CartViewModel)Session["Cart"];
+            if (cart == null)
+            {
+                cart = new CartViewModel();
+                Session["Cart"] = cart;
+            }
+            return cart;
+        }
+        #endregion
     }
 }
