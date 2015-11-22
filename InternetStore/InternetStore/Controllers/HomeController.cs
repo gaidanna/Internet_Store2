@@ -101,7 +101,7 @@ namespace InternetStore.Controllers
                 if ((TotalPagesDouble - Math.Truncate(TotalPagesDouble)) == 0 || TotalPagesDouble < 1)
                     TotalPages = Convert.ToInt32(TotalPagesDouble);
                 else
-                    TotalPages = Convert.ToInt32(TotalPagesDouble) + 1;
+                    TotalPages = (int)(Math.Truncate(TotalPagesDouble)) + 1;
                 int startElement = (CurrentPage - 1) * ProductsOnPage;
                 int endElement = CurrentPage * ProductsOnPage - 1;
                 if (startElement > (tempProsuctDetailListModel.Count - 1))
@@ -155,8 +155,29 @@ namespace InternetStore.Controllers
 
         public ActionResult OrderHistory()
         {
-
-            return View();
+            List<OrderHistory_OrderModel> model = new List<OrderHistory_OrderModel>();
+            if (User.Identity.IsAuthenticated)
+            {
+                using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+                {
+                    var currentUser = (from u in dbc.Users where u.Email == User.Identity.Name select u).ToList().FirstOrDefault();
+                    if (currentUser != null)
+                    {
+                        List<Order> orders = (from item in dbc.Orders where item.UserID==currentUser.ID select item).ToList();
+                        foreach (Order o in orders)
+                        {
+                            List<OrderDetails> tempOrderDetails = (from od in dbc.OrderDetails where od.OrderID==o.ID select od).ToList();
+                            double summ = (from s in dbc.Sales where s.OrderID == o.ID select s.SalesAmount).ToList().FirstOrDefault();
+                            OrderHistory_OrderModel oh_om = new OrderHistory_OrderModel(o.ID,o.ShippingAddress, DateTime.FromOADate(o.ShippingDate),o.ShippingStatus,summ);
+                            foreach (OrderDetails od in tempOrderDetails)
+                                oh_om.Products.Add(new OrderHistory_ProductModel(od.Product.ID, od.Product.ProductName, od.Product.Image, od.Product.Price,od.Quantity));
+                            model.Add(oh_om);
+                        }
+                        
+                    }
+                }
+            }
+            return View(model);
         }
 
         public ActionResult About()
