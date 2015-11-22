@@ -1,24 +1,20 @@
-﻿
+﻿@model InternetStore.Models.ProductDetailListModel
+
 @{
     ViewBag.Title = "ProductDetailList";
 }
 
-<style type="text/css">
-    .incenter {
-        display: inline-block;
-        float: none;
-        vertical-align: middle;
-    }
-</style>
-<h2>Laptop Lenovo C40</h2>
+<link type="text/css" href="~/Content/ProductDetailList.css" rel="stylesheet" />
+
+<h2>@Model.Category @Model.ProductName</h2>
 <div class="row">
     <div class="col-md-5 incenter">
-        <img src="http://savepic.su/6533640.png" class="img-responsive img-thumbnail" />
+        <a href="/Home/ProductDetailList/@Model.ID"><img src="@Model.Image" class="img-responsive img-thumbnail" /></a> 
     </div>
     <div class="col-md-6 text-center incenter">
-        <a href="#" class="incenter"><h3>Lenovo C40</h3></a>
-        <h4>Price 1$</h4>
-        <p>10 in Store</p>
+        <a href="/Home/ProductDetailList/@Model.ID" class="incenter"><h3>@Model.ProductName</h3></a>
+        <h4>$ @Model.Price</h4>
+        <p>@Model.Quantity in Store</p>
         <div class="btn btn-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Buy</div>
     </div>
 </div>
@@ -40,27 +36,14 @@
                 </div>
                 <div id="panel2" class="tab-pane fade">
                     <pre>                                     
-            Type: All-in-one, Touchscreen All-In-One
-            Processor Family: AMD A6
-            Processor Name: AMD A6-6310
-            Processor Speed: 1.8 GHz
-            RAM: 8 GB
-            Storage Capacity (as Tested): 1 TB
-            Storage Type: HDD
-            Graphics Card: AMD Radeon R4
-            Primary Optical Drive: Dual-Layer DVD+/-RW
-            Monitor Type: LED Widescreen
-            Touch Screen: Yes
-            Screen Size: 21.5 inches
+@Model.Description
 </pre>
                 </div>
                 <div id="panel3" class="tab-pane fade">
                     <h3>In future</h3>
-                    <p>It is my favorites laptop (c) Jesus Christ</p>
                 </div>
                 <div id="panel4" class="tab-pane fade">
                     <h3>In future</h3>
-                    <p>Photo</p>
                 </div>
             </div>
         </div>
