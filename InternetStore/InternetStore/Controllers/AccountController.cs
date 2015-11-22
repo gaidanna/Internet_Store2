@@ -60,43 +60,49 @@ namespace InternetStore.Controllers
             }
         }
 
-        ////
-        //// GET: /Account/Register
-        //[AllowAnonymous]
-        //public ActionResult Register()
-        //{
-        //    return View();
-        //}
+        //
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult Register()
+        {
+            return View();
+        }
 
-        ////
-        //// POST: /Account/Register
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Register(RegisterViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-        //        var result = await UserManager.CreateAsync(user, model.Password);
-        //        if (result.Succeeded)
-        //        {
-        //            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (InternetStoreDBContext dbc = new InternetStoreDBContext())
+                {
+                    var userInfo = (from u in dbc.Users where u.Email == model.Email select u).ToList().FirstOrDefault();
+                    if (userInfo == null)
+                    {
+                        var user = new Classes.User()
+                        {
+                            UserName = model.UserName,
+                            FirstName = model.FirstName,
+                            LastName = model.LastName,
+                            Phone = model.Phone,
+                            Email = model.Email,
+                            Password = model.Password
+                        };
 
-        //            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-        //            // Send an email with this link
-        //            // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-        //            // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-        //            // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                        dbc.Users.InsertOnSubmit(user);
+                        dbc.SubmitChanges();
 
-        //            return RedirectToAction("Index", "Home");
-        //        }
-        //        AddErrors(result);
-        //    }
-
-        //    // If we got this far, something failed, redisplay form
-        //    return View(model);
-        //}
+                        FormsAuthentication.SetAuthCookie(model.Email, false);
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
 
         ////
         //// GET: /Account/ForgotPassword
