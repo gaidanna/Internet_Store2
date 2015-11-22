@@ -166,6 +166,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Binders\CartModelBinder.cs" />
     <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\InternetStoreDBContext.cs" />
@@ -277,6 +278,8 @@
     <Content Include="Views\Home\ProductDetailList.cshtml" />
     <Content Include="Views\Home\OrderHistory.cshtml" />
     <Content Include="Views\Home\FAQ.cshtml" />
+    <Content Include="Views\Home\Cart.cshtml" />
+    <Content Include="Views\Home\CartSummary.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

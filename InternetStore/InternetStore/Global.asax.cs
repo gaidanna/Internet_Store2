@@ -1,4 +1,6 @@
-﻿using InternetStore.Classes;
+﻿using InternetStore.Binders;
+using InternetStore.Classes;
+using InternetStore.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -18,6 +20,8 @@ namespace InternetStore
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            ModelBinders.Binders.Add(typeof(CartViewModel), new CartModelBinder());
         }
     }
 }

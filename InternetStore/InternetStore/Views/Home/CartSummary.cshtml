@@ -1,0 +1,12 @@
+﻿@model InternetStore.Models.CartViewModel
+
+<div class="navbar-form navbar-right">
+    <div class="navbar-text navbar-left">
+        <b>Your cart:</b>
+        @Model.OrdersDetails.Sum(x => x.Quantity) item(s),
+        $@Model.ComputeTotalValue()
+    </div>
+    <div class="navbar-left">
+        @Html.ActionLink("Checkout", "Cart", "Home", new { returnUrl = Request.Url.PathAndQuery }, new { @class = "btn btn-default navbar-btn" })
+    </div>
+</div>
