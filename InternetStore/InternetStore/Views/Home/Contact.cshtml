@@ -28,26 +28,54 @@
         <div class="row">
             <div id="separator" class="col-md-2"></div>
             <div class="col-md-10 well well-lg">
-                <h3>Your questions or propositions:</h3>
+                <h3>Your questions or suggestions:</h3>
                 @using (Html.BeginForm())
                 {
                     @Html.ValidationSummary()
                     <fieldset>
                         <div class="form-group">
                             <label for="firstname" class="control-label">First Name</label>
-                            <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" />
+                            @if (Model != null && Model.FirstName != null)
+                            {
+                                <input value="@Model.FirstName" type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" />
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control" id="firstname" name="firstname" placeholder="First Name" />
+                            }
                         </div>
                         <div class="form-group">
                             <label for="lastname" class="control-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" />
+                            @if (Model != null && Model.LastName != null)
+                            {
+                                <input value="@Model.LastName" type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" />
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Last Name" />
+                            }
                         </div>
                         <div class="form-group">
                             <label for="email" class="control-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" />
+                            @if (Model != null && Model.Email != null)
+                            {
+                                <input value="@Model.Email" type="email" class="form-control" id="email" name="email" placeholder="Email Address" />
+                            }
+                            else
+                            {
+                                <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" />
+                            }
                         </div>
                         <div class="form-group">
                             <label for="phone" class="control-label">Phone</label>
-                            <input type="text" class="form-control bfh-phone" id="phone" name="phone" data-format="+1 (ddd) ddd-dddd" />
+                            @if (Model != null && Model.Phone != null)
+                            {
+                                <input value="@Model.Phone" type="text" class="form-control bfh-phone" id="phone" name="phone" data-format="+1 (ddd) ddd-dddd" />
+                            }
+                            else
+                            {
+                                <input type="text" class="form-control bfh-phone" id="phone" name="phone" data-format="+1 (ddd) ddd-dddd" />
+                            }
                         </div>
                         <div class="form-group">
                             <label for="comments" class="control-label">Comments</label>

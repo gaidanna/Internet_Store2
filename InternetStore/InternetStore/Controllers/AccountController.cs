@@ -134,14 +134,14 @@ namespace InternetStore.Controllers
         //    return View(model);
         //}
 
-        ////
-        //// POST: /Account/LogOff
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult LogOff()
-        //{
-        //    AuthenticationManager.SignOut();
-        //    return RedirectToAction("Index", "Home");
-        //}
+        //
+        // POST: /Account/LogOff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
