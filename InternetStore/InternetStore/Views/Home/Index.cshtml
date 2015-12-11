@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    List<InternetStore.Classes.Product> products = ViewBag.Products;
+}
+
+@*<div class="jumbotron">
+    <h1>ASP.NET</h1>
+    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+            enables a clean separation of concerns and gives you full control over markup
+            for enjoyable, agile development.
+        </p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Get more libraries</h2>
+        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Web Hosting</h2>
+        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    </div>
+</div>*@
+
+    <div class="row">
+
+        @*<div class="col-lg-12">
+            <h1 class="page-header">Thumbnail Gallery</h1>
+        </div>*@
+
+        @*--<div class="col-lg-4 col-md-4 col-xs-6 thumb">
+            <a class="thumbnail" href="#">
+                <img class="img-responsive" src="~/Images/Laptop.jpg" alt="">
+            </a>
+        </div>
+        <div class="col-lg-4 col-md-4 col-xs-6 thumb">
+            <a class="thumbnail" href="#">
+                <img class="img-responsive" src="~/Images/Laptop.jpg" alt="">
+            </a>
+        </div>
+        <div class="col-lg-4 col-md-4 col-xs-6 thumb">
+            <a class="thumbnail" href="#">
+                <img class="img-responsive" src="~/Images/Laptop.jpg" alt="">
+            </a>
+        </div>
+        <div class="col-lg-4 col-md-4 col-xs-6 thumb">
+            <a class="thumbnail" href="#">
+                <img class="img-responsive" src="~/Images/Laptop.jpg" alt="">
+            </a>
+        </div>
+        <div class="col-lg-4 col-md-4 col-xs-6 thumb">
+            <a class="thumbnail" href="#">
+                <img class="img-responsive" src="~/Images/Laptop.jpg" alt="">
+            </a>
+        </div>
+        <div class="col-lg-4 col-md-4 col-xs-6 thumb">
+            <a class="thumbnail" href="#">
+                <img class="img-responsive" src="~/Images/Laptop.jpg" alt="">
+            </a>
+        </div>--*@
+
+        <div class="col-md-offset-0">
+            <div class="row">
+                @foreach (var pdlm in products)
+                {
+                    <div class="col-md-4">
+                        <div class="well">
+                            <div class="row" style="height:60px;">
+                                <a href="/Home/ProductDetailList/@pdlm.ID"><h4>@pdlm.ProductName</h4></a>
+                            </div>
+                            <div class="row text-center">
+                                <img src="@pdlm.Image" class="img-responsive img-thumbnail" style="height:200px;" />
+                            </div>
+                            <div class="row">
+                                <h4><b>Price $ @pdlm.Price</b></h4>
+                            </div>
+                            <div class="row">
+                                <p>@pdlm.Quantity in Store</p>
+                            </div>
+                            <div class="description" hidden>
+                                @pdlm.Description
+                            </div>
+                            <div class="row">
+                                @using (Html.BeginForm("AddToCart", "Home"))
+                                {
+                                    <div class="pull-right">
+                                        @Html.Hidden("ProductID", pdlm.ID)
+                                        @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+                                        <button type="submit" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-shopping-cart"></span> Buy
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+@*
+        <div class="col-lg-4 col-md-4 col-xs-6 thumb">
+            <a class="thumbnail" href="#">
+                <img class="img-responsive" src="~/Images/1.png" alt="">
+            </a>
+        </div>
+        <div class="col-lg-4 col-md-4 col-xs-6 thumb">
+            <a class="thumbnail" href="#">
+                <img class="img-responsive" src="~/Images/1.png" alt="">
+            </a>
+        </div>
+        <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+        <a class="thumbnail" href="#">
+            <img class="img-responsive" src="~/Images/1.png" alt="">
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+        <a class="thumbnail" href="#">
+            <img class="img-responsive" src="~/Images/1.png" alt="">
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+        <a class="thumbnail" href="#">
+            <img class="img-responsive" src="~/Images/1.png" alt="">
+        </a>
+    </div>
+    <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+        <a class="thumbnail" href="#">
+            <img class="img-responsive" src="~/Images/1.png" alt="">
+        </a>
+    </div>*@
+    </div>
+
