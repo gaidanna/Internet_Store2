@@ -1,0 +1,137 @@
+﻿@using InternetStore.Models
+@model InternetStore.Models.ProductsListModel
+
+@{
+    ViewBag.Title = "ProductsList";
+}
+
+<script type="text/javascript" src="~/Scripts/jquery-2.1.4.min.js"></script>
+
+<div class="row">
+    <div class="col-md-2">
+        <form role="form" class="form-horizontal" action="/Home/ProductsList" method="post">
+
+            <div class="form-group">
+                <label class="col-md-12">Category</label>
+                <div class="col-md-12">
+                    <select class="form-control" name="Category" id="Category">
+                        <option value="All">All</option>
+                        @if (Model.Categories.Count != 0)
+                        {
+                            foreach (string category in Model.Categories)
+                            {
+                                <option value="@category" @(Model.SelectedCategory == category ? "selected" : string.Empty)>@category</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-12">Price</label>
+                <div class="row">
+                    <div class="col-md-5">
+                        <input type="number" class="form-control" name="PriceFrom" id="PriceFrom" min="0" value="@Model.PriceFrom">
+                    </div>
+                    <label class="col-md-1 control-label text-left">- </label>
+                    <div class="col-md-5">
+                        <input type="number" class="form-control" name="PriceTo" id="PriceTo" min="0" value="@Model.PriceTo">
+                    </div>
+                    <label class="col-md-1 control-label"> $</label>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-7">
+                    <input type="hidden" name="Page" id="Page" value="@Model.Page" />
+                    <input type="submit" id="btnSubmit" value="Apply" class="col-md-11" />
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="col-md-offset-3">
+        <div class="row">
+            @if (Model.Products.Count != 0)
+            {
+                foreach (ProductDetailListModel pdlm in Model.Products)
+                {
+                    <div class="col-md-4">
+                        <div class="well">
+                            <div class="row" style="height:60px;">
+                                <a href="/Home/ProductDetailList/@pdlm.ID"><h4>@pdlm.ProductName</h4></a>
+                            </div>
+                            <div class="row text-center">
+                                <img src="@pdlm.Image" class="img-responsive img-thumbnail" style="height:200px;" />
+                            </div>
+                            <div class="row">
+                                <h4><b>Price $ @pdlm.Price</b></h4>
+                            </div>
+                            <div class="row">
+                                <p>@pdlm.Quantity in Store</p>
+                            </div>
+                            <div class="description" hidden>
+                                @pdlm.Description
+                            </div>
+                            <div class="row">
+                                @using (Html.BeginForm("AddToCart", "Home"))
+                                {
+                                    <div class="pull-right">
+                                        @Html.Hidden("ProductID", pdlm.ID)
+                                        @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+                                        <button type="submit" class="btn btn-primary">
+                                            <span class="glyphicon glyphicon-shopping-cart"></span> Buy
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+@if (Model.CountOfPages > 1)
+{
+    <div class="row">
+        <div class="col-md-offset-3 text-center">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default previousPage" @(Model.Page == 1 ? "disabled" : string.Empty)>&laquo;</button>
+                @if (Model.Page > 1)
+                {
+                    <button type="button" class="btn btn-default previousPage">@(Model.Page - 1)</button>
+                }
+                <button type="button" class="btn btn-default active">@Model.Page</button>
+                @if (Model.Page < Model.CountOfPages)
+                {
+                    <button type="button" class="btn btn-default nextPage">@(Model.Page + 1)</button>
+                }
+                <button type="button" class="btn btn-default nextPage" @(Model.Page == Model.CountOfPages ? "disabled" : string.Empty)>&raquo;</button>
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+    $(document).ready(function () {
+        $(".well").mouseenter(function () {
+            $(this).children(".description").show();
+        });
+        $(".well").mouseleave(function () {
+            $(this).children(".description").hide();
+        });
+        $(".previousPage").click(function () {
+            var oldPage = $("#Page").val();
+            $("#Page").val(parseInt(oldPage) - 1);
+            $("#btnSubmit").click();
+        });
+        $(".nextPage").click(function () {
+            var oldPage = $("#Page").val();
+            $("#Page").val(parseInt(oldPage) +1);
+            $("#btnSubmit").click();
+        });
+    });
+</script>

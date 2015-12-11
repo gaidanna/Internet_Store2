@@ -1,0 +1,83 @@
+﻿@model InternetStore.Models.CartViewModel
+
+@{
+    ViewBag.Title = "Internet Store: Your Cart";
+}
+
+<style>
+    #cartTable td {
+        vertical-align: middle;
+    }
+
+    .count {
+        width: auto;
+    }
+    
+    #count form{
+        display: inline;
+    }
+</style>
+
+<h2>Your cart</h2>
+
+<table id="cartTable" class="table">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th></th>
+            <th>Quantity</th>
+            <th class="text-right">Price</th>
+            <th class="text-right">Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var orderDetail in Model.OrdersDetails)
+        {
+            <tr>
+                <td><img src="@orderDetail.Product.Image" class="img-responsive img-thumbnail" style="height:200px;" /></td>
+                <td class="text-left">@orderDetail.Product.ProductName</td>
+                <td class="text-center" id="count">
+                    @using (Html.BeginForm("RemoveFromCart", "Home"))
+                    {
+                        @Html.Hidden("ProductId", orderDetail.Product.ID)
+                        @Html.Hidden("ReturnUrl", (String)ViewBag.ReturnUrl)
+                        <input class="btn btn-sm btn-primary count" type="submit" value="<" />
+                    }
+                    @orderDetail.Quantity
+                    @using (Html.BeginForm("AddToCart", "Home"))
+                    {
+                        @Html.Hidden("ProductId", orderDetail.Product.ID)
+                        @Html.Hidden("ReturnUrl", (String)ViewBag.ReturnUrl)
+                        <input class="btn btn-sm btn-primary count" type="submit" value=">" />
+                    }
+                </td>
+                <td class="text-right">
+                    $@orderDetail.Product.Price
+                </td>
+                <td class="text-right">
+                    $@(orderDetail.Quantity * orderDetail.Product.Price)
+                </td>
+                <td>
+                    @using (Html.BeginForm("RemoveLineFromCart", "Home"))
+                    {
+                        @Html.Hidden("ProductId", orderDetail.Product.ID)
+                        @Html.Hidden("ReturnUrl", (String)ViewBag.ReturnUrl)
+                        <input class="btn btn-sm btn-warning" type="submit" value="Remove" />
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="text-right">Total:</td>
+            <td class="text-right">
+                $@Model.ComputeTotalValue()
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<div class="text-center">
+    <a class="btn btn-primary" href="@ViewBag.ReturnUrl">Continue shopping</a>
+    @Html.ActionLink("Checkout now", "Checkout", null, new { @class = "btn btn-primary"})
+</div>

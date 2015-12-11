@@ -1,0 +1,61 @@
+﻿@model InternetStore.Models.ProductDetailListModel
+
+@{
+    ViewBag.Title = "ProductDetailList";
+}
+
+<link type="text/css" href="~/Content/ProductDetailList.css" rel="stylesheet" />
+
+<h2>@Model.Category @Model.ProductName</h2>
+<div class="row">
+    <div class="col-md-5 incenter">
+        <a href="/Home/ProductDetailList/@Model.ID"><img src="@Model.Image" class="img-responsive img-thumbnail" /></a> 
+    </div>
+    <div class="col-md-6 text-center incenter">
+        <a href="/Home/ProductDetailList/@Model.ID" class="incenter"><h3>@Model.ProductName</h3></a>
+        <h3>$ @Model.Price</h3>
+        <p>@Model.Quantity in Store</p>
+        @using (Html.BeginForm("AddToCart", "Home"))
+        {
+            @Html.Hidden("ProductID", Model.ID)
+            @Html.Hidden("returnUrl", Request.Url.PathAndQuery)
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-shopping-cart"></span> Buy
+            </button>
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="well">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#panel1">Description</a></li>
+                <li><a data-toggle="tab" href="#panel2">Parameters</a></li>
+                <li><a data-toggle="tab" href="#panel3">Comments</a></li>
+                <li><a data-toggle="tab" href="#panel4">Photo</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="panel1" class="tab-pane fade in active">
+                    <h3>In future</h3>
+                    <p>Developers, designers, and engineers, rejoice! Our most mobile workstation ever has arrived. The W550s have been meticulously crafted to be slimmer and lighter than past models, yet maintain incredible levels of power. With the latest 5th Gen Intel® Core™ processors, high-end discrete graphics, and ISV-certifications for proven performance - you'll have all the power you'll need, without the worry of being tied to your desk.</p>
+                </div>
+                <div id="panel2" class="tab-pane fade">
+                    <pre>                                     
+@Model.Description
+</pre>
+                </div>
+                <div id="panel3" class="tab-pane fade">
+                    <h3>In future</h3>
+                </div>
+                <div id="panel4" class="tab-pane fade">
+                    <h3>In future</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
